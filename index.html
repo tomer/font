@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Font test</title>
+    <style>
+#input {
+  font-size: 200%;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  border: none;
+}
+
+/*#fsInput {
+  position: fixed;
+}*/
+
+.output {
+  font-size: 300%;
+  unicode-bidi: plaintext;
+  margin: 0 2em;
+  white-space: pre-line;
+}
+    </style>
+    <script type="text/javascript">
+function createFieldSet(id, title, style) {
+  var fieldset = document.createElement("fieldset");
+  fieldset.id = "fs" + id;
+
+  var legend = document.createElement("legend");
+  legend.for= "fs" + id;
+  legend.textContent = title;
+  fieldset.appendChild(legend);
+
+  var div = document.createElement("div");
+  div.style = style;
+  div.className = "output";
+  fieldset.appendChild(div);
+
+  return fieldset;
+}
+
+function updateOutputs(text) {
+  for (var element of document.getElementsByClassName("output"))
+    element.textContent = text;
+}
+
+function init() {
+  //var body = document.getElementsByTagName("body")[0];
+  var body = document.getElementById("outputs");
+  body.appendChild(createFieldSet("", "Default font", "font-family: unset;"));
+  body.appendChild(createFieldSet("", "Default serif font", "font-family: serif;"));
+  body.appendChild(createFieldSet("", "Default sans-Serif font", "font-family: sans-serif"));
+  body.appendChild(createFieldSet("", "Default fantasy font", "font-family: fantasy"));
+  body.appendChild(createFieldSet("", "Default cursive font", "font-family: cursive"));
+  body.appendChild(createFieldSet("", "Default Monospace font", "font-family: monospace;"));
+
+  var input = document.getElementById("input");
+  //updateOutputs(document.getElementById("input").value);
+  var modify = function() { updateOutputs(document.getElementById("input").value); }
+  modify();
+  input.addEventListener("keyup", modify, false);
+  
+  document.getElementById("create-field").addEventListener("click", function(){ 
+    var font = document.getElementById("font").value;
+    if (font !== "") {
+      body.appendChild(createFieldSet("", "Custom font "+ font, "font-family: " + font));
+      modify();
+    }
+  });
+}
+    </script>
+  </head>
+  <body onload="init();">
+    <fieldset id="fsInput">
+      <legend for="fsInput">Input</legend>
+      <!--input type="text" dir="auto" id="input" value="יַעֲקֹב בֶּן־דָּגָן הַשָּׂמֵחַ טִפֵּס בֶּעֱזוּז לְרֹאשׁ סֻלָּם מָאֳרָךְ לִצְפּוֹת בִּמְעוֹף דּוּכִיפַת וְנֵץ" /-->
+      <textarea autocomplete="on" dir="auto" id="input">יַעֲקֹב בֶּן־דָּגָן הַשָּׂמֵחַ טִפֵּס בֶּעֱזוּז לְרֹאשׁ סֻלָּם מָאֳרָךְ לִצְפּוֹת בִּמְעוֹף דּוּכִיפַת וְנֵץ</textarea>
+    </fieldset>
+    <div id="outputs"></div>
+    <fieldset>
+      <legend>Create new element…</legend>
+      <label>Font: <input type="text" id="font" required autocomplete="on"><label>
+      <input type="button" value="Add…" id="create-field">
+    </fieldset>
+  </body>
+</html>
